@@ -14,4 +14,4 @@ def courier():
     id_response = requests.post(login_courier_api, json={'login': login, 'password': password})
     courier_id = id_response.json().get('id')
     delete_response = requests.delete(f"{delete_courier_api}/{courier_id}", json={"id": courier_id})
-    assert '{"ok":true}' in delete_response.text
+    assert response.json() == {"ok": True}

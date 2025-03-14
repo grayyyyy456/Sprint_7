@@ -2,6 +2,7 @@ import pytest
 import requests
 from curl import creating_order_api
 import allure
+from data import StatusCode
 
 
 class TestCreateOrder:
@@ -25,4 +26,4 @@ class TestCreateOrder:
             "color": color
         }
         response = requests.post(creating_order_api, json=payload)
-        assert response.status_code == 201 and 'track' in response.json()
+        assert response.status_code == StatusCode.status_code_201 and 'track' in response.json()

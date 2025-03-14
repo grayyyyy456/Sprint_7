@@ -1,5 +1,5 @@
 import requests
-from data import DataCourier
+from data import DataCourier, StatusCode
 from curl import login_courier_api
 import allure
 
@@ -11,19 +11,19 @@ class TestLoginCourier:
             'password': DataCourier.password
         }
         response = requests.post(login_courier_api, json=data_create_courier)
-        assert response.status_code == 200 and response.json() == {'id': int(DataCourier.id)}
+        assert response.status_code == StatusCode.status_code_200 and response.json() == {'id': int(DataCourier.id)}
 
     @allure.title("Проверка на ошибку, при авторизации без логина")
     def test_courier_authorization_without_login(self):
         data_create_courier = {'password': DataCourier.password}
         response = requests.post(login_courier_api, json=data_create_courier)
-        assert response.status_code == 400 and 'Недостаточно данных для входа' in response.text
+        assert response.status_code == StatusCode.status_code_400 and 'Недостаточно данных для входа' in response.text
 
     @allure.title("Проверка на ошибку, при авторизации без пароля")
     def test_courier_authorization_without_password(self):   # падает с кодом 504
         data_create_courier = {'login': DataCourier.login}
         response = requests.post(login_courier_api, json=data_create_courier)
-        assert response.status_code == 400 and 'Недостаточно данных для входа' in response.text
+        assert response.status_code == StatusCode.status_code_400 and 'Недостаточно данных для входа' in response.text
 
     @allure.title("Проверка на ошибку, при авторизации с ошибкой в пароле")
     def test_courier_authorization_with_wrong_password(self):
@@ -32,7 +32,7 @@ class TestLoginCourier:
             'password': DataCourier.password + 'a'
         }
         response = requests.post(login_courier_api, json=data_create_courier)
-        assert response.status_code == 404 and 'Учетная запись не найдена' in response.text
+        assert response.status_code == StatusCode.status_code_404 and 'Учетная запись не найдена' in response.text
 
     @allure.title("Проверка на ошибку, при авторизации с ошибкой в логине")
     def test_courier_authorization_with_wrong_login(self):
@@ -41,6 +41,6 @@ class TestLoginCourier:
             'password': DataCourier.password
         }
         response = requests.post(login_courier_api, json=data_create_courier)
-        assert response.status_code == 404 and 'Учетная запись не найдена' in response.text
+        assert response.status_code == StatusCode.status_code_404 and 'Учетная запись не найдена' in response.text
 
 
