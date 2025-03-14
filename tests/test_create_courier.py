@@ -1,7 +1,6 @@
 from data import DataCourier, StatusCode, ResponseTextCreateCourier
 import allure
 from api_methods import ApiMethodsCourier
-from conftest import courier
 
 class TestCreateCourier:
     @allure.title("Проверка на создание курьера")
