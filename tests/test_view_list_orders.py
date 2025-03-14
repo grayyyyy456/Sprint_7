@@ -1,5 +1,4 @@
-import requests
-from curl import list_order_api
+from api_methods import ApiMethodsOrder
 import allure
 from data import StatusCode, ResponseTextListOrder
 
@@ -7,5 +6,5 @@ from data import StatusCode, ResponseTextListOrder
 class TestListOrders:
     @allure.title("Проверка, что в теле ответа есть список заказов")
     def test_view_list_orders(self):
-        response = requests.get(list_order_api)
+        response = ApiMethodsOrder.order_list()
         assert response.status_code == StatusCode.status_code_200 and ResponseTextListOrder.text_status_code_200 in response.text

@@ -1,6 +1,5 @@
 import pytest
-import requests
-from curl import creating_order_api
+from api_methods import ApiMethodsOrder
 import allure
 from data import StatusCode, ResponseTextCreateOrder
 
@@ -25,5 +24,5 @@ class TestCreateOrder:
             "comment": comment,
             "color": color
         }
-        response = requests.post(creating_order_api, json=payload)
+        response = ApiMethodsOrder.create_order(payload)
         assert response.status_code == StatusCode.status_code_201 and ResponseTextCreateOrder.text_status_code_201 in response.json()
