@@ -1,25 +1,18 @@
-import random
-import string
+import pytest
+from helpers import register_new_courier_and_return_login_password
+from data import ResponseTextCreateCourier, StatusCode, ResponseTextDeleteCourier
+from api_methods import ApiMethodsCourier
 
-# генерация рандомного логина, пароля и имени
-def register_new_courier_and_return_login_password():
-    # метод генерирует строку, состоящую только из букв нижнего регистра, в качестве параметра передаём длину строки
-    def generate_random_string(length):
-        letters = string.ascii_lowercase
-        random_string = ''.join(random.choice(letters) for i in range(length))
-        return random_string
 
-    # генерируем логин, пароль и имя курьера
-    login = generate_random_string(10)
-    password = generate_random_string(10)
-    first_name = generate_random_string(10)
-
-    # собираем тело запроса
-    payload = {
-        "login": login,
-        "password": password,
-        "firstName": first_name
-    }
-
-    # возвращаем список
-    return payload
+@pytest.fixture
+def courier():
+    data_create_courier = register_new_courier_and_return_login_password()
+    response = ApiMethodsCourier.create_courier(data_create_courier)
+    assert response.status_code == StatusCode.status_code_201 and response.json() == ResponseTextCreateCourier.text_status_code_201
+    yield data_create_courier
+    login = data_create_courier['login']
+    password = data_create_courier['password']
+    id_response = ApiMethodsCourier.login_courier(login, password)
+    courier_id = id_response.json().get('id')
+    delete_response = ApiMethodsCourier.delete_courier(courier_id)
+    assert delete_response.status_code == StatusCode.status_code_200 and response.json() == ResponseTextDeleteCourier.text_status_code_200

@@ -1,6 +1,4 @@
-import requests
 from data import DataCourier, StatusCode, ResponseTextLoginCourier
-from curl import login_courier_api
 import allure
 from api_methods import ApiMethodsCourier
 
