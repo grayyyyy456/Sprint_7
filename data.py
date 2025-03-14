@@ -26,3 +26,6 @@ class ResponseTextLoginCourier:
 
 class ResponseTextListOrder:
     text_status_code_200 = 'orders'
+
+class ResponseTextDeleteCourier:
+    text_status_code_200 = {"ok": True}
